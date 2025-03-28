@@ -98,11 +98,10 @@ if st.button("Abstimmen"):
     df_votes.to_csv(vote_file, index=False)
     st.success("Danke für deine Stimme!")
 
-# Ergebnisse anzeigen
-if os.path.exists(vote_file):
-    df_votes = pd.read_csv(vote_file)
-    st.markdown("### 📊 Live-Ergebnis")
-    st.bar_chart(data=df_votes.set_index("Option"))
+# Ergebnisse immer anzeigen
+df_votes = pd.read_csv(vote_file)
+st.markdown("### 📊 Live-Ergebnis")
+st.bar_chart(data=df_votes.set_index("Option"))
 
 # Website-Link unten anzeigen
 st.markdown("---")
