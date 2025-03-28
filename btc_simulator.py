@@ -37,7 +37,7 @@ def plot_btc_price(market_caps, btc_supply, usd_to_eur):
     with col1:
         st.markdown("### 💶 Preisübersicht in Euro")
         for cap, eur in zip(market_caps, prices_eur):
-            st.write(f"Bei {cap} Billionen USD: **{eur:,.0f} €** pro BTC")
+            st.write(f"Bei {cap} Billionen USD: **{eur:,.0f} €** pro BTC".replace(",", "."))
 
     with col2:
         fig, ax = plt.subplots(figsize=(8, 6))
