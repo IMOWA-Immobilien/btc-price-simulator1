@@ -26,6 +26,9 @@ btc_supply = st.slider(
 
 st.markdown("---")
 
+def format_number(n):
+    return f"{n:,.0f}".replace(",", ".")
+
 def plot_btc_price(market_caps, btc_supply, usd_to_eur):
     prices_usd = [(cap * 1e12) / btc_supply for cap in market_caps]
     prices_eur = [price * usd_to_eur for price in prices_usd]
@@ -37,7 +40,8 @@ def plot_btc_price(market_caps, btc_supply, usd_to_eur):
     with col1:
         st.markdown("### 💶 Preisübersicht in Euro")
         for cap, eur in zip(market_caps, prices_eur):
-            st.write(f"Bei {cap} Billionen USD: **{eur:,.0f} €** pro BTC".replace(",", "."))
+            formatted_price = format_number(eur)
+            st.write(f"Bei {cap} Billionen USD: **{formatted_price} €** pro BTC")
 
     with col2:
         fig, ax = plt.subplots(figsize=(8, 6))
