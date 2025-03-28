@@ -26,25 +26,23 @@ btc_supply = st.slider(
 st.markdown("---")
 
 # Berechnung & Anzeige
+import pandas as pd
+
 def plot_btc_price(market_caps, btc_supply, usd_to_eur):
     prices_usd = [(cap * 1e12) / btc_supply for cap in market_caps]
     prices_eur = [price * usd_to_eur for price in prices_usd]
     scenarios = [f"{cap} Billionen USD" for cap in market_caps]
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.bar(scenarios, prices_eur)
-    ax.set_title("Bitcoin-Preis bei verschiedenen Marktkapitalisierungen")
-    ax.set_ylabel("Preis pro Bitcoin (in EUR)")
-    ax.set_yscale('log')
-    ax.grid(axis='y', linestyle='--', alpha=0.7)
-    st.pyplot(fig)
+    # Linke Spalte: genaue Werte anzeigen
+    col1, col2 = st.columns([1, 2])
 
-    # Zusätzliche Tabelle
-    st.markdown("### 📊 Detaillierte Berechnung")
-    for cap, usd, eur in zip(market_caps, prices_usd, prices_eur):
-        st.write(f"Bei {cap} Billionen USD Marktkapitalisierung: **{usd:,.0f} USD** ≈ **{eur:,.0f} EUR** pro BTC")
+    with col1:
+        st.markdown("### 💶 Preis pro Bitcoin in EUR")
+        df = pd.DataFrame({
+            "Marktkapitalisierung (Billionen USD)": market_caps,
+            "Preis pro BTC (EUR)": [f"{eur:,.0f} €" for eur in prices_eur]
+        })
+        st.table(df)
 
-if market_caps:
-    plot_btc_price(market_caps, btc_supply, usd_to_eur)
-else:
-    st.info("Bitte wähle mindestens eine Marktkapitalisierung aus.")
+    with col2:
+        fig
