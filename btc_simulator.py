@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 # Titel
 st.title("🧮 Bitcoin-Preis-Simulator (in EUR)")
@@ -69,6 +70,39 @@ if market_caps:
     plot_btc_price(market_caps, btc_supply, usd_to_eur)
 else:
     st.info("Bitte wähle mindestens eine Marktkapitalisierung aus.")
+
+st.markdown("---")
+
+# Umfrage mit Live-Auswertung
+st.header("🗳️ Kurze Umfrage: Was glaubst du, wird der Bitcoin-Preis 2030 sein?")
+options = [
+    "< 100.000 €",
+    "100.000 – 500.000 €",
+    "500.000 – 1.000.000 €",
+    "> 1.000.000 €"
+]
+choice = st.radio("Deine Einschätzung:", options)
+
+# Einfache Dateibasierte Speicherung (nur für lokale oder einfache Nutzung)
+vote_file = "votes.csv"
+
+# Initialisierung
+if not os.path.exists(vote_file):
+    df_init = pd.DataFrame({"Option": options, "Stimmen": [0]*len(options)})
+    df_init.to_csv(vote_file, index=False)
+
+# Stimmen speichern
+if st.button("Abstimmen"):
+    df_votes = pd.read_csv(vote_file)
+    df_votes.loc[df_votes["Option"] == choice, "Stimmen"] += 1
+    df_votes.to_csv(vote_file, index=False)
+    st.success("Danke für deine Stimme!")
+
+# Ergebnisse anzeigen
+if os.path.exists(vote_file):
+    df_votes = pd.read_csv(vote_file)
+    st.markdown("### 📊 Live-Ergebnis")
+    st.bar_chart(data=df_votes.set_index("Option"))
 
 # Website-Link unten anzeigen
 st.markdown("---")
