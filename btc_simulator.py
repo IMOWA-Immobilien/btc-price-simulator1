@@ -56,3 +56,7 @@ if market_caps:
     plot_btc_price(market_caps, btc_supply, usd_to_eur)
 else:
     st.info("Bitte wähle mindestens eine Marktkapitalisierung aus.")
+
+# Website-Link unten anzeigen
+st.markdown("---")
+st.markdown("🌐 Besuche uns auf: [www.imowa-immo.de](https://www.imowa-immo.de)")
